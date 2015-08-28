@@ -27,6 +27,8 @@
           </div>
         </div>
 
+        <div id="latestPosts"></div>
+
         <script type="text/javascript">
             var $btn = document.getElementById("btn-calc");
 
@@ -63,7 +65,7 @@
                 document.getElementById('imc').innerHTML = res;
                 document.getElementById('sit').innerHTML = sit;
 
-                // alert(res);
+
               });
 
             });
@@ -79,6 +81,30 @@
               }
             };
 
+            function loadPosts() {
+                  var request = new XMLHttpRequest();
+
+                  request.open("GET", "https://webapp-romariosantos.c9.io/restapp.php", true);
+
+                  request.onreadystatechange = function() {//Call a function when the state changes.
+                      if (request.readyState == 4) {
+                          if (request.status == 200 || request.status == 0) {
+                              var response = JSON.parse(request.responseText);
+                              var data = '';
+
+                              for (var i = 0; i < response.nomes.length; i++) {
+                                  data += response.nomes[i]+'<br/>';
+                              }
+
+                              var reshtml = document.getElementById("latestPosts");
+                              reshtml.innerHTML = data;
+                          }
+                      }
+                  }
+                  request.send();
+              }
+
+              loadPosts();
         </script>
 
         <script type="text/javascript" src="cordova.js"></script>
